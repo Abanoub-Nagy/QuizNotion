@@ -1,5 +1,6 @@
 package com.example.quiznotion.presentation.dashboard
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,9 +22,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.quiznotion.domain.model.QuizTopic
+import com.example.quiznotion.presentation.dashboard.component.ShimmerEffect
 import com.example.quiznotion.presentation.dashboard.component.TopicCard
 import com.example.quiznotion.presentation.dashboard.component.UserStatisticsCard
 
@@ -44,6 +47,7 @@ fun DashboardScreen(
         QuizTopicSection(
             modifier = Modifier.fillMaxWidth(),
             quizTopics = state.quizTopics,
+            isTopicsLoading = state.isTopicsLoading
         )
     }
 }
@@ -86,6 +90,7 @@ fun HeaderSection(
 fun QuizTopicSection(
     modifier: Modifier = Modifier,
     quizTopics: List<QuizTopic> = emptyList(),
+    isTopicsLoading: Boolean = false
 ) {
     Column(
         modifier = modifier
@@ -101,14 +106,26 @@ fun QuizTopicSection(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalArrangement = Arrangement.spacedBy(30.dp),
         ) {
-            items(quizTopics) { topic ->
-                TopicCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(120.dp),
-                    topicName = topic.name,
-                    imageUrl = topic.imageUrl,
-                    onTopicClicked = { /* TODO: Handle topic click */ })
+            if (isTopicsLoading) {
+                items(7) {
+                    ShimmerEffect(
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.small)
+                            .fillMaxWidth()
+                            .height(120.dp)
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                    )
+                }
+            } else {
+                items(quizTopics) { topic ->
+                    TopicCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp),
+                        topicName = topic.name,
+                        imageUrl = topic.imageUrl,
+                        onTopicClicked = { /* TODO: Handle topic click */ })
+                }
             }
         }
     }
@@ -130,6 +147,7 @@ private fun PreviewDashboardScreen() {
         questionsAttempted = 42,
         correctAnswers = 30,
         quizTopics = dummyQuizTopic,
+        isTopicsLoading = true
     )
     DashboardScreen(
         state = state
