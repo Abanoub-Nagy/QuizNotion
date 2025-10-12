@@ -1,5 +1,6 @@
 package com.example.quiznotion.presentation.dashboard.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,10 +31,11 @@ fun TopicCard(
     modifier: Modifier = Modifier,
     topicName: String = "Topic Name",
     imageUrl: String = "",
+    onTopicClicked: () -> Unit = {},
 ) {
     Box {
         Card(
-            modifier = modifier
+            modifier = modifier.clickable { onTopicClicked() },
         ) {
             Column(
                 modifier = Modifier
@@ -46,7 +48,7 @@ fun TopicCard(
                         .padding(bottom = 5.dp)
                         .size(20.dp),
                     painter = painterResource(R.drawable.ic_play),
-                    contentDescription = topicName,
+                    contentDescription = "Play $topicName quiz",
                     tint = MaterialTheme.colorScheme.primary,
                 )
                 Text(
@@ -90,6 +92,7 @@ private fun PreviewTopicCard() {
             .fillMaxWidth()
             .height(120.dp),
         topicName = "Mathematics",
-        imageUrl = "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+        imageUrl = "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+        onTopicClicked = {},
     )
 }

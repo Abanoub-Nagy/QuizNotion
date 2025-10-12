@@ -1,11 +1,18 @@
 package com.example.quiznotion.presentation.dashboard
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
@@ -16,6 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.quiznotion.domain.model.QuizTopic
+import com.example.quiznotion.presentation.dashboard.component.TopicCard
 import com.example.quiznotion.presentation.dashboard.component.UserStatisticsCard
 
 @Composable
@@ -31,6 +40,11 @@ fun DashboardScreen(
             questionsAttempted = state.questionsAttempted,
             correctAnswers = state.correctAnswers,
             onEditProfileClicked = { /* TODO: Handle edit profile click */ })
+
+        QuizTopicSection(
+            modifier = Modifier.fillMaxWidth(),
+            quizTopics = state.quizTopics,
+        )
     }
 }
 
@@ -68,13 +82,54 @@ fun HeaderSection(
     }
 }
 
+@Composable
+fun QuizTopicSection(
+    modifier: Modifier = Modifier,
+    quizTopics: List<QuizTopic> = emptyList(),
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text = "What topic do you want to improve today?",
+            style = MaterialTheme.typography.titleLarge
+        )
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 150.dp),
+            contentPadding = PaddingValues(15.dp),
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            verticalArrangement = Arrangement.spacedBy(30.dp),
+        ) {
+            items(quizTopics) { topic ->
+                TopicCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp),
+                    topicName = topic.name,
+                    imageUrl = topic.imageUrl,
+                    onTopicClicked = { /* TODO: Handle topic click */ })
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun PreviewDashboardScreen() {
+    val dummyQuizTopic = List(20) {
+        QuizTopic(
+            id = it.toString(),
+            name = "Topic $it",
+            imageUrl = "https://picsum.photos/200?random=$it",
+            code = it,
+        )
+    }
     val state = DashboardState(
         username = "John Doe",
         questionsAttempted = 42,
         correctAnswers = 30,
+        quizTopics = dummyQuizTopic,
     )
     DashboardScreen(
         state = state
