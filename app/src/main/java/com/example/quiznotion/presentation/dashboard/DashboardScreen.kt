@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.quiznotion.domain.model.QuizTopic
+import com.example.quiznotion.presentation.component.ErrorScreen
 import com.example.quiznotion.presentation.dashboard.component.ShimmerEffect
 import com.example.quiznotion.presentation.dashboard.component.TopicCard
 import com.example.quiznotion.presentation.dashboard.component.UserStatisticsCard
@@ -47,8 +48,9 @@ fun DashboardScreen(
         QuizTopicSection(
             modifier = Modifier.fillMaxWidth(),
             quizTopics = state.quizTopics,
-            isTopicsLoading = state.isTopicsLoading
-        )
+            isTopicsLoading = state.isTopicsLoading,
+            error = state.error,
+            onRefreshClicked = { /* TODO: Handle refresh click */ })
     }
 }
 
@@ -90,7 +92,9 @@ fun HeaderSection(
 fun QuizTopicSection(
     modifier: Modifier = Modifier,
     quizTopics: List<QuizTopic> = emptyList(),
-    isTopicsLoading: Boolean = false
+    isTopicsLoading: Boolean = false,
+    error: String?,
+    onRefreshClicked: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -100,31 +104,41 @@ fun QuizTopicSection(
             text = "What topic do you want to improve today?",
             style = MaterialTheme.typography.titleLarge
         )
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 150.dp),
-            contentPadding = PaddingValues(15.dp),
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            verticalArrangement = Arrangement.spacedBy(30.dp),
-        ) {
-            if (isTopicsLoading) {
-                items(7) {
-                    ShimmerEffect(
-                        modifier = Modifier
-                            .clip(MaterialTheme.shapes.small)
-                            .fillMaxWidth()
-                            .height(120.dp)
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
-                    )
-                }
-            } else {
-                items(quizTopics) { topic ->
-                    TopicCard(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp),
-                        topicName = topic.name,
-                        imageUrl = topic.imageUrl,
-                        onTopicClicked = { /* TODO: Handle topic click */ })
+        if (error != null) {
+            ErrorScreen(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                errorMessage = error,
+                onRefreshClicked = onRefreshClicked,
+            )
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 150.dp),
+                contentPadding = PaddingValues(15.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(30.dp),
+            ) {
+                if (isTopicsLoading) {
+                    items(7) {
+                        ShimmerEffect(
+                            modifier = Modifier
+                                .clip(MaterialTheme.shapes.small)
+                                .fillMaxWidth()
+                                .height(120.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                        )
+                    }
+                } else {
+                    items(quizTopics) { topic ->
+                        TopicCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(120.dp),
+                            topicName = topic.name,
+                            imageUrl = topic.imageUrl,
+                            onTopicClicked = { /* TODO: Handle topic click */ })
+                    }
                 }
             }
         }
@@ -147,7 +161,8 @@ private fun PreviewDashboardScreen() {
         questionsAttempted = 42,
         correctAnswers = 30,
         quizTopics = dummyQuizTopic,
-        isTopicsLoading = true
+        isTopicsLoading = false,
+        error = "Failed to load quiz topics"
     )
     DashboardScreen(
         state = state
