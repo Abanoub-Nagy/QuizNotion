@@ -3,6 +3,7 @@ package com.example.quiznotion.presentation.dashboard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -23,7 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.example.quiznotion.domain.model.QuizTopic
 import com.example.quiznotion.presentation.component.ErrorScreen
@@ -33,13 +35,13 @@ import com.example.quiznotion.presentation.dashboard.component.UserStatisticsCar
 
 @Composable
 fun DashboardScreen(
-    modifier: Modifier = Modifier, state: DashboardState
+    state: DashboardState
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         HeaderSection(
-            modifier = Modifier.padding(top = 40.dp, start = 10.dp, end = 10.dp),
+            modifier = Modifier.fillMaxWidth(),
             username = state.username,
             questionsAttempted = state.questionsAttempted,
             correctAnswers = state.correctAnswers,
@@ -62,26 +64,34 @@ fun HeaderSection(
     correctAnswers: Int,
     onEditProfileClicked: () -> Unit
 ) {
-    Column(modifier = modifier) {
-        Text(
-            text = "Hello!", style = MaterialTheme.typography.bodyMedium
-        )
-        Row {
+    FlowRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Column(modifier = Modifier.padding(top = 40.dp, start = 10.dp, end = 10.dp)) {
             Text(
-                text = username, style = MaterialTheme.typography.headlineMedium
+                text = "Hello!", style = MaterialTheme.typography.bodyMedium
             )
-            IconButton(
-                modifier = Modifier.offset(x = (-10).dp, y = (-20).dp),
-                onClick = onEditProfileClicked
-            ) {
-                Icon(
-                    modifier = Modifier.size(15.dp),
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Profile"
+            Row {
+                Text(
+                    text = username, style = MaterialTheme.typography.headlineMedium
                 )
+                IconButton(
+                    modifier = Modifier.offset(x = (-10).dp, y = (-20).dp),
+                    onClick = onEditProfileClicked
+                ) {
+                    Icon(
+                        modifier = Modifier.size(15.dp),
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Edit Profile"
+                    )
+                }
             }
         }
         UserStatisticsCard(
+            modifier = Modifier
+                .widthIn(max = 400.dp)
+                .padding(10.dp),
             questionsAttempted = questionsAttempted,
             correctAnswers = correctAnswers,
         )
@@ -145,7 +155,8 @@ fun QuizTopicSection(
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
+@PreviewScreenSizes
 @Composable
 private fun PreviewDashboardScreen() {
     val dummyQuizTopic = List(20) {
