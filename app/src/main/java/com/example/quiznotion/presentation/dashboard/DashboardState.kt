@@ -8,5 +8,8 @@ data class DashboardState(
     val correctAnswers: Int = 0,
     val quizTopics: List<QuizTopic> = emptyList(),
     val isTopicsLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val isNameEditDialogOpen: Boolean = false,
+    val nameTextFieldValue: String = "",
+    val usernameError: String? = null,
 )

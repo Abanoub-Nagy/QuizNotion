@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.example.quiznotion.domain.model.QuizTopic
 import com.example.quiznotion.presentation.component.ErrorScreen
+import com.example.quiznotion.presentation.dashboard.component.NameEditDialog
 import com.example.quiznotion.presentation.dashboard.component.ShimmerEffect
 import com.example.quiznotion.presentation.dashboard.component.TopicCard
 import com.example.quiznotion.presentation.dashboard.component.UserStatisticsCard
@@ -37,6 +38,14 @@ import com.example.quiznotion.presentation.dashboard.component.UserStatisticsCar
 fun DashboardScreen(
     state: DashboardState
 ) {
+    NameEditDialog(
+        isDialogOpen = state.isNameEditDialogOpen,
+        textFieldValue = state.nameTextFieldValue,
+        usernameError = state.usernameError,
+        onConfirmClicked = {},
+        onDismissRequest = {},
+        onTextFieldValueChanged = {},
+    )
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -173,7 +182,7 @@ private fun PreviewDashboardScreen() {
         correctAnswers = 30,
         quizTopics = dummyQuizTopic,
         isTopicsLoading = false,
-        error = "Failed to load quiz topics"
+        isNameEditDialogOpen = true
     )
     DashboardScreen(
         state = state
