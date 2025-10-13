@@ -19,39 +19,62 @@ import androidx.compose.ui.unit.dp
 import com.example.quiznotion.domain.model.QuizQuestion
 import com.example.quiznotion.domain.model.UserAnswer
 import com.example.quiznotion.presentation.component.ErrorScreen
+import com.example.quiznotion.presentation.quiz.component.ExitQuizDialog
 import com.example.quiznotion.presentation.quiz.component.QuestionItem
 import com.example.quiznotion.presentation.quiz.component.QuestionNavRow
+import com.example.quiznotion.presentation.quiz.component.QuizScreenLoadingContent
 import com.example.quiznotion.presentation.quiz.component.QuizScreenTopBar
 import com.example.quiznotion.presentation.quiz.component.QuizSubmitButton
+import com.example.quiznotion.presentation.quiz.component.SubmitQuizDialog
 
 @Composable
 fun QuizScreen(
     modifier: Modifier = Modifier, state: QuizState
 ) {
+    SubmitQuizDialog(
+        isDialogOpen = state.isSubmitDialogOpen,
+        onConfirmClicked = { /* TODO: Handle submit action */ },
+        onDismissRequest = { /* TODO: Handle dismiss action */ },
+    )
+    ExitQuizDialog(
+        isDialogOpen = state.isExitDialogOpen,
+        onConfirmClicked = { /* TODO: Handle submit action */ },
+        onDismissRequest = { /* TODO: Handle dismiss action */ },
+    )
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         QuizScreenTopBar(
-            title = state.topBarTitle, onExitClicked = { /* TODO: Handle exit action */ })
-        when {
-            state.error != null -> {
-                ErrorScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    errorMessage = state.error,
-                    onRefreshClicked = {})
-            }
+            title = state.topBarTitle, onExitClicked = { /* TODO: Handle exit action */ },
+        )
+        if (state.isLoading) {
+            QuizScreenLoadingContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
+                loadingErrorText = state.loadingErrorText,
+            )
+        } else {
+            when {
+                state.error != null -> {
+                    ErrorScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        errorMessage = state.error,
+                        onRefreshClicked = {})
+                }
 
-            state.questions.isEmpty() -> {
-                ErrorScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    errorMessage = "No Questions Available",
-                    onRefreshClicked = {})
-            }
+                state.questions.isEmpty() -> {
+                    ErrorScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        errorMessage = "No Questions Available",
+                        onRefreshClicked = {})
+                }
 
-            else -> {
-                QuizScreenContent(
-                    state = state
-                )
+                else -> {
+                    QuizScreenContent(
+                        state = state
+                    )
+                }
             }
         }
     }
@@ -115,6 +138,13 @@ private fun PreviewQuizScreen() {
         UserAnswer(questionId = "3", selectedAnswer = ""), // unanswered
     )
     QuizScreen(
-        state = QuizState(questions = dummyQuestions, answers = dummyAnswers)
+        state = QuizState(
+            questions = dummyQuestions,
+            answers = dummyAnswers,
+//            isLoading = true,
+//            loadingErrorText = "Loading... Please wait or check your internet connection..",
+            topBarTitle = "Sample Quiz",
+            isSubmitDialogOpen = true
+        )
     )
 }

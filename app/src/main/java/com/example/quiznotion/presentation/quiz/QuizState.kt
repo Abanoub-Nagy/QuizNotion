@@ -9,4 +9,8 @@ data class QuizState(
     val currentQuestionIndex: Int = 0,
     val error: String? = null,
     val topBarTitle: String = "",
+    val isSubmitDialogOpen: Boolean = false,
+    val isExitDialogOpen: Boolean = false,
+    val loadingErrorText: String? = null,
+    val isLoading: Boolean = false,
 )
