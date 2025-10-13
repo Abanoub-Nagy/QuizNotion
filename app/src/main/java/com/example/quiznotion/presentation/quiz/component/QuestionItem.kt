@@ -1,10 +1,13 @@
 package com.example.quiznotion.presentation.quiz.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +22,7 @@ fun QuestionItem(
     currentQuestionIndex: Int,
     questions: List<QuizQuestion>,
     answers: List<UserAnswer>,
-    onOptionSelected: (String,String) -> Unit
+    onOptionSelected: (String, String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -30,14 +33,18 @@ fun QuestionItem(
             text = currentQuestion.question, style = MaterialTheme.typography.headlineSmall
         )
         Spacer(modifier = Modifier.height(10.dp))
-        currentQuestion.allOptions.forEach { option ->
-            OptionItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp),
-                optionText = option,
-                isSelected = option == selectedAnswer,
-                onOptionSelected = { onOptionSelected(currentQuestion.id, option) })
+        FlowRow (
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ){
+            currentQuestion.allOptions.forEach { option ->
+                OptionItem(
+                    modifier = Modifier
+                        .widthIn(min = 400.dp)
+                        .padding(vertical = 10.dp),
+                    optionText = option,
+                    isSelected = option == selectedAnswer,
+                    onOptionSelected = { onOptionSelected(currentQuestion.id, option) })
+            }
         }
     }
 }
