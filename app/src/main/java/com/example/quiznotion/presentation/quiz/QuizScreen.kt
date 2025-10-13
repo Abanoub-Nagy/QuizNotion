@@ -7,6 +7,7 @@ package com.example.quiznotion.presentation.quiz
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -17,19 +18,53 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.quiznotion.domain.model.QuizQuestion
 import com.example.quiznotion.domain.model.UserAnswer
+import com.example.quiznotion.presentation.component.ErrorScreen
 import com.example.quiznotion.presentation.quiz.component.QuestionItem
 import com.example.quiznotion.presentation.quiz.component.QuestionNavRow
 import com.example.quiznotion.presentation.quiz.component.QuizScreenTopBar
+import com.example.quiznotion.presentation.quiz.component.QuizSubmitButton
 
 @Composable
 fun QuizScreen(
     modifier: Modifier = Modifier, state: QuizState
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         QuizScreenTopBar(
-            title = "Android Quiz", onExitClicked = { /* TODO: Handle exit action */ })
+            title = state.topBarTitle, onExitClicked = { /* TODO: Handle exit action */ })
+        when {
+            state.error != null -> {
+                ErrorScreen(
+                    modifier = Modifier.fillMaxSize(),
+                    errorMessage = state.error,
+                    onRefreshClicked = {})
+            }
+
+            state.questions.isEmpty() -> {
+                ErrorScreen(
+                    modifier = Modifier.fillMaxSize(),
+                    errorMessage = "No Questions Available",
+                    onRefreshClicked = {})
+            }
+
+            else -> {
+                QuizScreenContent(
+                    state = state
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun QuizScreenContent(
+    modifier: Modifier = Modifier,
+    state: QuizState,
+) {
+    Column(
+        modifier = modifier.fillMaxSize()
+    ) {
         QuestionNavRow(
             currentQuestionIndex = state.currentQuestionIndex,
             questions = state.questions,
@@ -39,6 +74,7 @@ fun QuizScreen(
         Spacer(modifier = Modifier.height(20.dp))
         QuestionItem(
             modifier = Modifier
+                .weight(1f)
                 .padding(15.dp)
                 .verticalScroll(rememberScrollState()),
             currentQuestionIndex = state.currentQuestionIndex,
@@ -47,6 +83,16 @@ fun QuizScreen(
             onOptionSelected = { questionId, selectedOption ->
 
             },
+        )
+        QuizSubmitButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            isPreviousEnabled = state.currentQuestionIndex != 0,
+            isNextEnabled = state.currentQuestionIndex != state.questions.lastIndex,
+            onPreviousClicked = {},
+            onNextClicked = {},
+            onSubmitClicked = {},
         )
     }
 }

@@ -7,4 +7,6 @@ data class QuizState(
     val questions: List<QuizQuestion> = emptyList(),
     val answers: List<UserAnswer> = emptyList(),
     val currentQuestionIndex: Int = 0,
+    val error: String? = null,
+    val topBarTitle: String = "",
 )
