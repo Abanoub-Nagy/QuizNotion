@@ -123,19 +123,19 @@ fun QuizScreenContent(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewQuizScreen() {
-    val dummyQuestions = List(10) { index ->
+    val dummyQuestions = List(size = 10) { index ->
         QuizQuestion(
-            id = index.toString(),
+            id = "$index",
             topicCode = 1,
-            question = "Sample Question $index",
-            allOptions = listOf("Option A", "Option B", "Option C", "Option D"),
-            correctAnswer = "Option A",
-            explanation = "This is a sample explanation for question $index."
+            question = "What is the language for Android Dev?",
+            allOptions = listOf("Java", "Python", "Dart", "Kotlin"),
+            correctAnswer = "Kotlin",
+            explanation = "Some Explanation"
         )
     }
     val dummyAnswers = listOf(
-        UserAnswer(questionId = "1", selectedAnswer = "Option A"), // answered
-        UserAnswer(questionId = "3", selectedAnswer = ""), // unanswered
+        UserAnswer(questionId = "1", selectedAnswer = ""),
+        UserAnswer(questionId = "3", selectedAnswer = ""),
     )
     QuizScreen(
         state = QuizState(
