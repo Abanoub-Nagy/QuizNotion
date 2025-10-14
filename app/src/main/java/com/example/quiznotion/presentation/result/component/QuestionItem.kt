@@ -61,12 +61,12 @@ fun QuestionItem(
             Text(
                 text = letter + option, color = optionColor
             )
-            Text(
-                modifier = Modifier.padding(10.dp),
-                text = question.explanation,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-            )
-            HorizontalDivider()
         }
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text = question.explanation,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+        )
+        HorizontalDivider()
     }
 }
