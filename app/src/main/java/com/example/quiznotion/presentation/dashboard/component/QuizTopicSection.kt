@@ -25,7 +25,8 @@ fun QuizTopicSection(
     quizTopics: List<QuizTopic> = emptyList(),
     isTopicsLoading: Boolean = false,
     error: String?,
-    onRefreshClicked: () -> Unit = {}
+    onRefreshClicked: () -> Unit = {},
+    onTopicSelected: (Int) -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -68,7 +69,7 @@ fun QuizTopicSection(
                                 .height(120.dp),
                             topicName = topic.name,
                             imageUrl = topic.imageUrl,
-                            onTopicClicked = { /* TODO: Handle topic click */ })
+                            onTopicClicked = { onTopicSelected(topic.code) })
                     }
                 }
             }

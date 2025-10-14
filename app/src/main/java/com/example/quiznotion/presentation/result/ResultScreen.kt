@@ -22,7 +22,9 @@ import com.example.quiznotion.presentation.result.component.ScoreCard
 
 @Composable
 fun ResultScreen(
-    state: ResultState
+    state: ResultState,
+    onReportIssueClicked: (String) -> Unit,
+    onStartNewQuizClicked: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -54,14 +56,19 @@ fun ResultScreen(
                 QuestionItem(
                     question = state.quizQuestions[index],
                     userSelectedAnswer = userSelectedAnswer,
-                    onReviewClicked = { /* TODO: Handle review clicked */ })
+                    onReportIconClicked = {
+                        onReportIssueClicked(
+                            state.quizQuestions[index].id
+                        )
+                    })
             }
         }
         Button(
             modifier = Modifier
                 .padding(10.dp)
                 .align(Alignment.CenterHorizontally),
-            onClick = { /* TODO: Handle retake quiz action */ }) {
+            onClick = onStartNewQuizClicked
+        ) {
             Text(
                 text = "Start New Quiz"
             )
@@ -93,6 +100,7 @@ private fun PreviewResultScreen() {
             correctAnswers = 3,
             quizQuestions = dummyQuestions,
             userAnswers = dummyAnswers
-        )
+        ),
+        onReportIssueClicked = {}, onStartNewQuizClicked = {},
     )
 }

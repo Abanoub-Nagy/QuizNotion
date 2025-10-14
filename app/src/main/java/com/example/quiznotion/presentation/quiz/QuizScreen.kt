@@ -29,7 +29,9 @@ import com.example.quiznotion.presentation.quiz.component.SubmitQuizDialog
 
 @Composable
 fun QuizScreen(
-    modifier: Modifier = Modifier, state: QuizState
+    state: QuizState,
+    navigateToDashboardScreen: () -> Unit = {},
+    navigateToResultScreen: () -> Unit = {},
 ) {
     SubmitQuizDialog(
         isDialogOpen = state.isSubmitDialogOpen,
@@ -42,10 +44,10 @@ fun QuizScreen(
         onDismissRequest = { /* TODO: Handle dismiss action */ },
     )
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         QuizScreenTopBar(
-            title = state.topBarTitle, onExitClicked = { /* TODO: Handle exit action */ },
+            title = state.topBarTitle, onExitClicked = navigateToDashboardScreen,
         )
         if (state.isLoading) {
             QuizScreenLoadingContent(
@@ -72,7 +74,8 @@ fun QuizScreen(
 
                 else -> {
                     QuizScreenContent(
-                        state = state
+                        state = state,
+                        onSubmitButtonClicked = navigateToResultScreen
                     )
                 }
             }
@@ -84,6 +87,7 @@ fun QuizScreen(
 fun QuizScreenContent(
     modifier: Modifier = Modifier,
     state: QuizState,
+    onSubmitButtonClicked: () -> Unit = {},
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -115,7 +119,7 @@ fun QuizScreenContent(
             isNextEnabled = state.currentQuestionIndex != state.questions.lastIndex,
             onPreviousClicked = {},
             onNextClicked = {},
-            onSubmitClicked = {},
+            onSubmitClicked = onSubmitButtonClicked,
         )
     }
 }
@@ -139,12 +143,12 @@ private fun PreviewQuizScreen() {
     )
     QuizScreen(
         state = QuizState(
-            questions = dummyQuestions,
-            answers = dummyAnswers,
+            questions = dummyQuestions, answers = dummyAnswers,
 //            isLoading = true,
 //            loadingErrorText = "Loading... Please wait or check your internet connection..",
-            topBarTitle = "Sample Quiz",
-            isSubmitDialogOpen = true
-        )
+            topBarTitle = "Sample Quiz", isSubmitDialogOpen = true
+        ),
+        navigateToDashboardScreen = {},
+        navigateToResultScreen = {}
     )
 }

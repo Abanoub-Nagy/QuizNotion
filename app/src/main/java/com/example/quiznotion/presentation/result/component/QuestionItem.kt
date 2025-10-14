@@ -24,7 +24,7 @@ fun QuestionItem(
     modifier: Modifier = Modifier,
     question: QuizQuestion,
     userSelectedAnswer: String?,
-    onReviewClicked: () -> Unit = {}
+    onReportIconClicked: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -38,7 +38,7 @@ fun QuestionItem(
                 fontWeight = FontWeight.Bold,
             )
             IconButton(
-                onClick = onReviewClicked
+                onClick = onReportIconClicked
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Info, contentDescription = "Review Info"

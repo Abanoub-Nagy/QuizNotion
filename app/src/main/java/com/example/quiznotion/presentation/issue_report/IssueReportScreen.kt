@@ -23,12 +23,13 @@ import com.example.quiznotion.presentation.issue_report.component.QuestionCard
 @Composable
 fun IssueReportScreen(
     state: IssueReportState,
+    onBackButtonClicked: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         IssueReportScreenTopBar(
-            title = "Issue Report", onBackButtonClicked = {},
+            title = "Issue Report", onBackButtonClicked = onBackButtonClicked,
         )
         Column(
             modifier = Modifier
@@ -89,6 +90,5 @@ fun IssueReportScreen(
 @Composable
 private fun PreviewIssueReportScreen() {
     IssueReportScreen(
-        state = IssueReportState()
-    )
+        state = IssueReportState(), onBackButtonClicked = {})
 }

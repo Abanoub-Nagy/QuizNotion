@@ -13,7 +13,8 @@ import com.example.quiznotion.presentation.dashboard.component.QuizTopicSection
 
 @Composable
 fun DashboardScreen(
-    state: DashboardState
+    state: DashboardState,
+    onTopicSelected: (Int) -> Unit = {},
 ) {
     NameEditDialog(
         isDialogOpen = state.isNameEditDialogOpen,
@@ -38,11 +39,12 @@ fun DashboardScreen(
             quizTopics = state.quizTopics,
             isTopicsLoading = state.isTopicsLoading,
             error = state.error,
-            onRefreshClicked = { /* TODO: Handle refresh click */ })
+            onRefreshClicked = { /* TODO: Handle refresh click */ },
+            onTopicSelected = onTopicSelected,
+        )
     }
 }
 
-//@Preview(showBackground = true)
 @PreviewScreenSizes
 @Composable
 private fun PreviewDashboardScreen() {
@@ -63,7 +65,7 @@ private fun PreviewDashboardScreen() {
         isNameEditDialogOpen = false
     )
     DashboardScreen(
-        state = state
+        state = state,
+        onTopicSelected = {}
     )
-
 }
