@@ -4,6 +4,7 @@ package com.example.quiznotion.presentation.issue_report.component
  * @author Abanoub Nagy
  */
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,7 +21,11 @@ import androidx.compose.ui.tooling.preview.Preview
 fun IssueReportScreenTopBar(
     modifier: Modifier = Modifier, title: String, onBackButtonClicked: () -> Unit = {}
 ) {
-    TopAppBar(modifier = modifier, title = { Text(title) }, navigationIcon = {
+    TopAppBar(
+        windowInsets = WindowInsets(0),
+        modifier = modifier,
+        title = { Text(title) },
+        navigationIcon = {
         IconButton(
             onClick = onBackButtonClicked
         ) {
