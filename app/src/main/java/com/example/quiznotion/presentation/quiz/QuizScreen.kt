@@ -66,10 +66,10 @@ fun QuizScreen(
                 }
 
                 state.questions.isEmpty() -> {
-                    ErrorScreen(
-                        modifier = Modifier.fillMaxSize(),
-                        errorMessage = "No Questions Available",
-                        onRefreshClicked = {})
+//                    ErrorScreen(
+//                        modifier = Modifier.fillMaxSize(),
+//                        errorMessage = "No Questions Available",
+//                        onRefreshClicked = {})
                 }
 
                 else -> {
