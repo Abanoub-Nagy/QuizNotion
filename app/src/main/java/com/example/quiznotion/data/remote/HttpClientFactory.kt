@@ -22,9 +22,9 @@ object HttpClientFactory {
                 json(json = Json { ignoreUnknownKeys = true })
             }
             install(HttpTimeout) {
-                requestTimeoutMillis = 15000
-                connectTimeoutMillis = 15000
-                socketTimeoutMillis = 15000
+                requestTimeoutMillis = 20000
+                connectTimeoutMillis = 20000
+                socketTimeoutMillis = 20000
             }
             install(Logging) {
                 logger = Logger.ANDROID
