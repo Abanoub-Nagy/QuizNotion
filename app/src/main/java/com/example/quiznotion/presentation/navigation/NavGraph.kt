@@ -3,15 +3,17 @@ package com.example.quiznotion.presentation.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.quiznotion.domain.model.QuizQuestion
-import com.example.quiznotion.domain.model.QuizTopic
 import com.example.quiznotion.presentation.dashboard.DashboardScreen
-import com.example.quiznotion.presentation.dashboard.DashboardState
+import com.example.quiznotion.presentation.dashboard.DashboardViewModel
 import com.example.quiznotion.presentation.issue_report.IssueReportScreen
 import com.example.quiznotion.presentation.issue_report.IssueReportState
 import com.example.quiznotion.presentation.quiz.QuizScreen
@@ -40,17 +42,10 @@ fun NavGraph(
             )
         }
         composable<Route.DashBoardScreen> {
-            val dummyQuizTopic = List(20) {
-                QuizTopic(
-                    id = it.toString(),
-                    name = "Topic $it",
-                    imageUrl = "https://picsum.photos/200?random=$it",
-                    code = it,
-                )
-            }
+            val viewModel = viewModel<DashboardViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             DashboardScreen(
-                state = DashboardState(quizTopics = dummyQuizTopic),
-                onTopicSelected = { topicCode ->
+                state = state, onTopicSelected = { topicCode ->
                     navController.navigate(Route.QuizScreen(topicCode))
                 })
         }
