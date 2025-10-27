@@ -4,13 +4,21 @@ import com.example.quiznotion.data.mapper.toQuizQuestions
 import com.example.quiznotion.data.remote.RemoteQuizDataSource
 import com.example.quiznotion.domain.model.QuizQuestion
 import com.example.quiznotion.domain.repository.QuizQuestionRepository
+import com.example.quiznotion.domain.util.DataError
+import com.example.quiznotion.domain.util.Result
 
 class QuizQuestionRepositoryImpl(
     private val remoteQuizDataSource: RemoteQuizDataSource
 ) : QuizQuestionRepository {
 
-    override suspend fun getQuizQuestions(): List<QuizQuestion>? {
-        val quizQuestionsDto = remoteQuizDataSource.getQuizQuestions()
-        return quizQuestionsDto?.toQuizQuestions()
+    override suspend fun getQuizQuestions(): Result<List<QuizQuestion>, DataError> {
+        return when (val result = remoteQuizDataSource.getQuizQuestions()) {
+            is Result.Success -> {
+                val questionsDto = result.data
+                Result.Success(questionsDto.toQuizQuestions())
+            }
+
+            is Result.Failure -> result
+        }
     }
 }

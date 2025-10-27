@@ -1,7 +1,9 @@
 package com.example.quiznotion.domain.repository
 
 import com.example.quiznotion.domain.model.QuizTopic
+import com.example.quiznotion.domain.util.DataError
+import com.example.quiznotion.domain.util.Result
 
 interface QuizTopicRepository {
-    suspend fun getQuizTopics(): List<QuizTopic>?
+    suspend fun getQuizTopics(): Result<List<QuizTopic>, DataError>
 }
