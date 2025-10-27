@@ -1,5 +1,7 @@
 package com.example.quiznotion.di
 
+import com.example.quiznotion.data.local.DatabaseFactory
+import com.example.quiznotion.data.local.QuizDatabase
 import com.example.quiznotion.data.remote.HttpClientFactory
 import com.example.quiznotion.data.remote.KtorRemoteQuizDataSource
 import com.example.quiznotion.data.remote.RemoteQuizDataSource
@@ -17,6 +19,9 @@ import org.koin.dsl.module
 val koinModule = module {
     single { HttpClientFactory.create() }
     singleOf(::KtorRemoteQuizDataSource).bind<RemoteQuizDataSource>()
+
+    single { DatabaseFactory.create(get()) }
+    single { get<QuizDatabase>().quizTopicDao() }
 
     singleOf(::QuizQuestionRepositoryImpl).bind<QuizQuestionRepository>()
     singleOf(::QuizTopicRepositoryImpl).bind<QuizTopicRepository>()
