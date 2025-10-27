@@ -2,17 +2,18 @@ package com.example.quiznotion.presentation.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quiznotion.data.repository.QuizTopicRepositoryImpl
+import com.example.quiznotion.domain.repository.QuizQuestionRepository
+import com.example.quiznotion.domain.repository.QuizTopicRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class DashboardViewModel : ViewModel() {
+class DashboardViewModel(
+    private val topicRepository: QuizTopicRepository
+) : ViewModel() {
     private val _state = MutableStateFlow(DashboardState())
     val state = _state.asStateFlow()
-
-    val quizTopicRepository = QuizTopicRepositoryImpl()
 
     init {
         getQuizTopics()
@@ -20,7 +21,7 @@ class DashboardViewModel : ViewModel() {
 
     private fun getQuizTopics() {
         viewModelScope.launch {
-            val quizTopics = quizTopicRepository.getQuizTopics()
+            val quizTopics = topicRepository.getQuizTopics()
             _state.update {
                 it.copy(
                     quizTopics = quizTopics ?: emptyList(),

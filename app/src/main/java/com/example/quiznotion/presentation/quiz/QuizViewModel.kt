@@ -2,15 +2,16 @@ package com.example.quiznotion.presentation.quiz
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quiznotion.data.repository.QuizQuestionRepositoryImpl
 import com.example.quiznotion.domain.model.UserAnswer
+import com.example.quiznotion.domain.repository.QuizQuestionRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class QuizViewModel : ViewModel() {
-    private val repository = QuizQuestionRepositoryImpl()
+class QuizViewModel(
+    private val questionRepository: QuizQuestionRepository
+) : ViewModel() {
     private val _state = MutableStateFlow(QuizState())
     val state = _state.asStateFlow()
 
@@ -52,7 +53,7 @@ class QuizViewModel : ViewModel() {
 
     fun getQuizQuestions() {
         viewModelScope.launch {
-            val quizQuestions = repository.getQuizQuestions()
+            val quizQuestions = questionRepository.getQuizQuestions()
             _state.value = state.value.copy(
                 questions = quizQuestions ?: emptyList()
             )

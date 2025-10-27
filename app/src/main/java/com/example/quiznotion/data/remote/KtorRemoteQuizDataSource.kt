@@ -9,12 +9,11 @@ import io.ktor.client.request.get
 
 class KtorRemoteQuizDataSource(
     private val httpClient: HttpClient
-) {
+) : RemoteQuizDataSource {
 
-    suspend fun getQuizTopics(): List<QuizTopicDto>? {
+    override suspend fun getQuizTopics(): List<QuizTopicDto>? {
         return try {
-            val response =
-                httpClient.get(urlString = "$BASE_URL/quiz/topics")
+            val response = httpClient.get(urlString = "$BASE_URL/quiz/topics")
             response.body<List<QuizTopicDto>>()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -22,10 +21,9 @@ class KtorRemoteQuizDataSource(
         }
     }
 
-    suspend fun getQuizQuestions(): List<QuizQuestionDto>? {
+    override suspend fun getQuizQuestions(): List<QuizQuestionDto>? {
         return try {
-            val response =
-                httpClient.get(urlString = "$BASE_URL/quiz/questions/random")
+            val response = httpClient.get(urlString = "$BASE_URL/quiz/questions/random")
             response.body<List<QuizQuestionDto>>()
         } catch (e: Exception) {
             e.printStackTrace()
