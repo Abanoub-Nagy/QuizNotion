@@ -22,8 +22,7 @@ class QuizViewModel(
     savedStateHandle: SavedStateHandle,
     private val topicRepository: QuizTopicRepository,
     private val questionRepository: QuizQuestionRepository,
-
-    ) : ViewModel() {
+) : ViewModel() {
     private val topicCode = savedStateHandle.toRoute<Route.QuizScreen>().topicCode
     private val _state = MutableStateFlow(QuizState())
     val state = _state.asStateFlow()
@@ -64,6 +63,36 @@ class QuizViewModel(
                 }
                 _state.update { it.copy(answers = currentAnswers) }
             }
+
+            QuizAction.ExitQuizButtonClick -> {
+                _state.update { it.copy(isExitDialogOpen = true) }
+            }
+
+            QuizAction.ExitQuizDialogDismiss -> {
+                _state.update { it.copy(isExitDialogOpen = false) }
+            }
+
+            QuizAction.ExitQuizConfirmButtonClick -> {
+                _state.update { it.copy(isExitDialogOpen = false) }
+                _event.trySend(QuizEvent.NavigateToDashboardScreen)
+            }
+
+            QuizAction.SubmitQuizButtonClick -> {
+                _state.update { it.copy(isSubmitDialogOpen = true) }
+            }
+
+            QuizAction.SubmitQuizDialogDismiss -> {
+                _state.update { it.copy(isSubmitDialogOpen = false) }
+            }
+
+            QuizAction.SubmitQuizConfirmButtonClick -> {
+                _state.update { it.copy(isSubmitDialogOpen = false) }
+                _event.trySend(QuizEvent.NavigateToResultScreen)
+            }
+
+            QuizAction.Refresh -> {
+                setupQuiz()
+            }
         }
     }
 
@@ -71,10 +100,8 @@ class QuizViewModel(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    isLoading = true,
-                    loadingErrorText = "Setting up the quiz...",
-
-                    )
+                    isLoading = true, loadingErrorText = "Setting up the quiz..."
+                )
             }
             getQuizTopicName(topicCode)
             getQuizQuestions(topicCode)
@@ -110,13 +137,9 @@ class QuizViewModel(
 
     private suspend fun getQuizTopicName(topicCode: Int) {
         topicRepository.getQuizTopicByCode(topicCode).onSuccess { topic ->
-            _state.update {
-                it.copy(
-                    topBarTitle = topic.name + " Quiz"
-                )
-            }
-        }.onFailure {
-            _event.send(QuizEvent.ShowErrorMessage(it.getErrorMessage()))
+            _state.update { it.copy(topBarTitle = topic.name + " Quiz") }
+        }.onFailure { error ->
+            _event.send(QuizEvent.ShowErrorMessage(error.getErrorMessage()))
         }
     }
 }

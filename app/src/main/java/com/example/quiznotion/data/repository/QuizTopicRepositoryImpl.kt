@@ -17,16 +17,16 @@ class QuizTopicRepositoryImpl(
     override suspend fun getQuizTopics(): Result<List<QuizTopic>, DataError> {
         return when (val result = remoteQuizDataSource.getQuizTopics()) {
             is Result.Success -> {
-                val topics = result.data
+                val quizTopicsDto = result.data
                 topicDao.clearAllQuizTopics()
-                topicDao.insertQuizTopics(topics.toQuizTopicsEntity())
-                return Result.Success(topics.toQuizTopics())
+                topicDao.insertQuizTopics(quizTopicsDto.toQuizTopicsEntity())
+                Result.Success(quizTopicsDto.toQuizTopics())
             }
 
             is Result.Failure -> {
-                val cachedTopics = topicDao.getAllQuizTopics()
-                if (cachedTopics.isNotEmpty()) {
-                    Result.Success(cachedTopics.entityToQuizTopics())
+                val cachedTopic = topicDao.getAllQuizTopics()
+                if (cachedTopic.isNotEmpty()) {
+                    Result.Success(cachedTopic.entityToQuizTopics())
                 } else {
                     result
                 }
@@ -36,11 +36,11 @@ class QuizTopicRepositoryImpl(
 
     override suspend fun getQuizTopicByCode(topicCode: Int): Result<QuizTopic, DataError> {
         return try {
-            val cachedTopic = topicDao.getQuizTopicByCode(topicCode)
-            if (cachedTopic != null) {
-                Result.Success(cachedTopic.entityToQuizTopics())
+            val topicEntity = topicDao.getQuizTopicByCode(topicCode)
+            if (topicEntity != null) {
+                Result.Success(topicEntity.entityToQuizTopics())
             } else {
-                Result.Failure(DataError.Unknown("Topic with code $topicCode not found"))
+                Result.Failure(DataError.Unknown(errorMessage = "Quiz Topic not found."))
             }
         } catch (e: Exception) {
             Result.Failure(DataError.Unknown(e.message))

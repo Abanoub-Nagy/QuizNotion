@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 data class QuizQuestionDto(
     val id: String,
     val question: String,
-    @SerialName("topicCode")
     val topicCode: Int,
     @SerialName("incorrectAnswers")
     val inCorrectAnswers: List<String>,

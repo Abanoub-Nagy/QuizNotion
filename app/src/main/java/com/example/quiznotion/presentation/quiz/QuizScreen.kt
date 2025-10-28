@@ -52,25 +52,38 @@ fun QuizScreen(
                         context, quizEvent.message, Toast.LENGTH_LONG
                     ).show()
                 }
+
+                QuizEvent.NavigateToDashboardScreen -> {
+                    navigateToDashboardScreen()
+                }
+
+                QuizEvent.NavigateToResultScreen -> {
+                    navigateToResultScreen()
+                }
             }
         }
     }
 
     SubmitQuizDialog(
         isDialogOpen = state.isSubmitDialogOpen,
-        onConfirmClicked = { /* TODO: Handle submit action */ },
-        onDismissRequest = { /* TODO: Handle dismiss action */ },
+        onConfirmClicked = {
+            onAction(QuizAction.SubmitQuizConfirmButtonClick)
+        },
+        onDismissRequest = {
+            onAction(QuizAction.SubmitQuizDialogDismiss)
+        },
     )
     ExitQuizDialog(
-        isDialogOpen = state.isExitDialogOpen,
-        onConfirmClicked = { /* TODO: Handle submit action */ },
-        onDismissRequest = { /* TODO: Handle dismiss action */ },
+        isOpen = state.isExitDialogOpen,
+        onDialogDismiss = { onAction(QuizAction.ExitQuizDialogDismiss) },
+        onConfirmButtonClick = { onAction(QuizAction.ExitQuizConfirmButtonClick) }
     )
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         QuizScreenTopBar(
-            title = state.topBarTitle, onExitClicked = navigateToDashboardScreen,
+            title = state.topBarTitle, onExitClicked = { onAction(QuizAction.ExitQuizButtonClick) },
         )
         if (state.isLoading) {
             QuizScreenLoadingContent(
@@ -85,22 +98,25 @@ fun QuizScreen(
                     ErrorScreen(
                         modifier = Modifier.fillMaxSize(),
                         errorMessage = state.error,
-                        onRefreshClicked = {})
+                        onRefreshClicked = {
+                            onAction(QuizAction.Refresh)
+                        })
                 }
 
                 state.questions.isEmpty() -> {
                     ErrorScreen(
                         modifier = Modifier.fillMaxSize(),
                         errorMessage = "No Questions Available",
-                        onRefreshClicked = {})
+                        onRefreshClicked = {
+                            onAction(QuizAction.Refresh)
+                        })
                 }
 
                 else -> {
                     QuizScreenContent(
                         state = state,
-                        onAction = onAction,
-                        onSubmitButtonClicked = navigateToResultScreen
-                    )
+                        onAction = onAction
+                        )
                 }
             }
         }
@@ -111,7 +127,6 @@ fun QuizScreen(
 fun QuizScreenContent(
     modifier: Modifier = Modifier,
     state: QuizState,
-    onSubmitButtonClicked: () -> Unit = {},
     onAction: (QuizAction) -> Unit = {},
 ) {
     val pagerState = rememberPagerState(
@@ -172,7 +187,9 @@ fun QuizScreenContent(
             isNextEnabled = state.currentQuestionIndex != state.questions.lastIndex,
             onPreviousClicked = { onAction(QuizAction.PreviousQuestionButtonClicked) },
             onNextClicked = { onAction(QuizAction.NextQuestionButtonClicked) },
-            onSubmitClicked = onSubmitButtonClicked,
+            onSubmitClicked = {
+                onAction(QuizAction.SubmitQuizButtonClick)
+            },
         )
     }
 }

@@ -15,7 +15,6 @@ interface QuizTopicDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertQuizTopics(topics: List<QuizTopicEntity>)
 
-
     @Query("DELETE FROM quiz_topics")
     suspend fun clearAllQuizTopics()
 
