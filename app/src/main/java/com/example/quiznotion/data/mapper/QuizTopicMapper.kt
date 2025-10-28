@@ -12,8 +12,7 @@ private fun QuizTopicDto.toQuizTopic() = QuizTopic(
 private fun QuizTopicDto.toQuizTopicEntity() = QuizTopicEntity(
     id = id, name = name, imageUrl = BASE_URL + imageUrl, code = code
 )
-
-private fun QuizTopicEntity.entityToQuizTopics() = QuizTopic(
+ fun QuizTopicEntity.entityToQuizTopics() = QuizTopic(
     id = id, name = name, imageUrl = imageUrl, code = code
 )
 

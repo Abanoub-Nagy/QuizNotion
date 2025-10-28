@@ -9,6 +9,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.example.quiznotion.presentation.navigation.NavGraph
 import com.example.quiznotion.presentation.theme.QuizNotionTheme
+import org.koin.androidx.compose.KoinAndroidContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,15 +17,16 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         enableEdgeToEdge()
         setContent {
-            QuizNotionTheme {
-                val navController = rememberNavController()
-                Scaffold { paddingValues ->
-                    NavGraph(
-                        navController = navController,
-                        paddingValues = paddingValues
-                    )
+            KoinAndroidContext {
+                QuizNotionTheme {
+                    val navController = rememberNavController()
+                    Scaffold { paddingValues ->
+                        NavGraph(
+                            navController = navController,
+                            paddingValues = paddingValues
+                        )
+                    }
                 }
-
             }
         }
     }

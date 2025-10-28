@@ -4,6 +4,7 @@ package com.example.quiznotion.presentation.quiz
  * @author Abanoub Nagy
  */
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.quiznotion.domain.model.QuizQuestion
@@ -30,14 +32,30 @@ import com.example.quiznotion.presentation.quiz.component.QuizScreenLoadingConte
 import com.example.quiznotion.presentation.quiz.component.QuizScreenTopBar
 import com.example.quiznotion.presentation.quiz.component.QuizSubmitButton
 import com.example.quiznotion.presentation.quiz.component.SubmitQuizDialog
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun QuizScreen(
     state: QuizState,
+    event: Flow<QuizEvent>,
     navigateToDashboardScreen: () -> Unit = {},
     navigateToResultScreen: () -> Unit = {},
     onAction: (QuizAction) -> Unit = {},
 ) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        event.collect { quizEvent ->
+            when (quizEvent) {
+                is QuizEvent.ShowErrorMessage -> {
+                    Toast.makeText(
+                        context, quizEvent.message, Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
     SubmitQuizDialog(
         isDialogOpen = state.isSubmitDialogOpen,
         onConfirmClicked = { /* TODO: Handle submit action */ },
@@ -127,8 +145,7 @@ fun QuizScreenContent(
         )
         Spacer(modifier = Modifier.height(20.dp))
         HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.weight(1f)
+            state = pagerState, modifier = Modifier.weight(1f)
         ) {
             QuestionItem(
                 modifier = Modifier
@@ -141,8 +158,7 @@ fun QuizScreenContent(
                 onOptionSelected = { questionId, selectedOption ->
                     onAction(
                         QuizAction.OnOptionSelected(
-                            questionId = questionId,
-                            answer = selectedOption
+                            questionId = questionId, answer = selectedOption
                         )
                     )
                 },
@@ -184,5 +200,10 @@ private fun PreviewQuizScreen() {
 //            isLoading = true,
 //            loadingErrorText = "Loading... Please wait or check your internet connection..",
         topBarTitle = "Sample Quiz", isSubmitDialogOpen = true
-    ), navigateToDashboardScreen = {}, navigateToResultScreen = {}, onAction = {})
+    ),
+        navigateToDashboardScreen = {},
+        navigateToResultScreen = {},
+        onAction = {},
+        event = emptyFlow()
+    )
 }

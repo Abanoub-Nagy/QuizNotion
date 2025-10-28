@@ -33,4 +33,18 @@ class QuizTopicRepositoryImpl(
             }
         }
     }
+
+    override suspend fun getQuizTopicByCode(topicCode: Int): Result<QuizTopic, DataError> {
+        return try {
+            val cachedTopic = topicDao.getQuizTopicByCode(topicCode)
+            if (cachedTopic != null) {
+                Result.Success(cachedTopic.entityToQuizTopics())
+            } else {
+                Result.Failure(DataError.Unknown("Topic with code $topicCode not found"))
+            }
+        } catch (e: Exception) {
+            Result.Failure(DataError.Unknown(e.message))
+        }
+
+    }
 }

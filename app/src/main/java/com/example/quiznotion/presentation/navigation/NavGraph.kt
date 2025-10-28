@@ -9,7 +9,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.example.quiznotion.domain.model.QuizQuestion
 import com.example.quiznotion.presentation.dashboard.DashboardScreen
 import com.example.quiznotion.presentation.dashboard.DashboardViewModel
@@ -50,18 +49,19 @@ fun NavGraph(
                 })
         }
         composable<Route.QuizScreen> {
-            val topicCode = it.toRoute<Route.QuizScreen>().topicCode
             val viewModel = koinViewModel<QuizViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
-            QuizScreen(state = state, onAction = viewModel::onAction, navigateToDashboardScreen = {
-                navController.navigateUp()
-            }, navigateToResultScreen = {
-                navController.navigate(Route.ResultScreen) {
-                    popUpTo<Route.QuizScreen> {
-                        inclusive = true
+            QuizScreen(
+                state = state, onAction = viewModel::onAction, navigateToDashboardScreen = {
+                    navController.navigateUp()
+                }, event = viewModel.event,
+                navigateToResultScreen = {
+                    navController.navigate(Route.ResultScreen) {
+                        popUpTo<Route.QuizScreen> {
+                            inclusive = true
+                        }
                     }
-                }
-            })
+                })
         }
         composable<Route.ResultScreen> {
             ResultScreen(
