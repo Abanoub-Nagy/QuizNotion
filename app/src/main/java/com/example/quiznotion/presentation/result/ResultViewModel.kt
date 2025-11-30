@@ -29,14 +29,45 @@ class ResultViewModel(
     private fun fetchData() {
         viewModelScope.launch {
             getQuizQuestions()
+            getUserAnswers()
+            updateResult()
         }
     }
 
     private suspend fun getQuizQuestions() {
         questionRepository.getQuizQuestions().onSuccess { questions ->
-                _state.update { it.copy(quizQuestions = questions) }
+            _state.update { it.copy(quizQuestions = questions) }
+        }.onFailure { error ->
+            _event.send(ResultEvent.ShowToast(error.getErrorMessage()))
+        }
+    }
+
+    private suspend fun getUserAnswers() {
+        questionRepository.getUserAnswers().onSuccess { answers ->
+                _state.update { it.copy(userAnswers = answers) }
             }.onFailure { error ->
                 _event.send(ResultEvent.ShowToast(error.getErrorMessage()))
             }
+    }
+
+    private fun updateResult() {
+        val quizQuestions = state.value.quizQuestions
+        val userAnswers = state.value.userAnswers
+        val totalQuestions = quizQuestions.size
+        val correctAnswersCount = userAnswers.count { answer ->
+            val question = quizQuestions.find { it.id == answer.questionId }
+            question?.correctAnswer == answer.selectedAnswer
+        }
+        val scorePercentage = if (totalQuestions > 0) {
+            (correctAnswersCount * 100) / totalQuestions
+        } else 0
+
+        _state.update {
+            it.copy(
+                totalQuestions = totalQuestions,
+                correctAnswers = correctAnswersCount,
+                scorePercentage = scorePercentage
+            )
+        }
     }
 }

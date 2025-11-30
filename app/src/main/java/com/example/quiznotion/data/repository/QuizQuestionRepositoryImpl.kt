@@ -1,11 +1,15 @@
 package com.example.quiznotion.data.repository
 
 import com.example.quiznotion.data.local.dao.QuizQuestionDao
+import com.example.quiznotion.data.local.dao.UserAnswerDao
 import com.example.quiznotion.data.mapper.entityToQuizQuestions
 import com.example.quiznotion.data.mapper.toQuizQuestions
 import com.example.quiznotion.data.mapper.toQuizQuestionsEntity
+import com.example.quiznotion.data.mapper.toUserAnswers
+import com.example.quiznotion.data.mapper.toUserAnswersEntity
 import com.example.quiznotion.data.remote.RemoteQuizDataSource
 import com.example.quiznotion.domain.model.QuizQuestion
+import com.example.quiznotion.domain.model.UserAnswer
 import com.example.quiznotion.domain.repository.QuizQuestionRepository
 import com.example.quiznotion.domain.util.DataError
 import com.example.quiznotion.domain.util.Result
@@ -13,6 +17,7 @@ import com.example.quiznotion.domain.util.Result
 class QuizQuestionRepositoryImpl(
     private val remoteQuizDataSource: RemoteQuizDataSource,
     private val questionDao: QuizQuestionDao,
+    private val answerDao: UserAnswerDao,
 ) : QuizQuestionRepository {
 
     override suspend fun fetchAndSaveQuizQuestions(topicCode: Int): Result<List<QuizQuestion>, DataError> {
@@ -37,6 +42,29 @@ class QuizQuestionRepositoryImpl(
                 Result.Success(questionsEntity.entityToQuizQuestions())
             } else {
                 Result.Failure(DataError.Unknown(errorMessage = "No Quiz Questions Found."))
+            }
+        } catch (e: Exception) {
+            Result.Failure(DataError.Unknown(e.message))
+        }
+    }
+
+    override suspend fun saveUserAnswers(userAnswers: List<UserAnswer>): Result<Unit, DataError> {
+        return try {
+            val answersEntity = userAnswers.toUserAnswersEntity()
+            answerDao.insertUserAnswers(answersEntity)
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            Result.Failure(DataError.Unknown(e.message))
+        }
+    }
+
+    override suspend fun getUserAnswers(): Result<List<UserAnswer>, DataError> {
+        return try {
+            val answersEntity = answerDao.getAllUserAnswers()
+            if (answersEntity.isNotEmpty()) {
+                Result.Success(answersEntity.toUserAnswers())
+            } else {
+                Result.Failure(DataError.Unknown(errorMessage = "No User Answers found"))
             }
         } catch (e: Exception) {
             Result.Failure(DataError.Unknown(e.message))

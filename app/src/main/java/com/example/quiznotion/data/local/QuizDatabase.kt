@@ -6,14 +6,15 @@ import androidx.room.TypeConverters
 import com.example.quiznotion.data.local.converter.OptionListConverters
 import com.example.quiznotion.data.local.dao.QuizQuestionDao
 import com.example.quiznotion.data.local.dao.QuizTopicDao
+import com.example.quiznotion.data.local.dao.UserAnswerDao
 import com.example.quiznotion.data.local.entity.QuizQuestionEntity
 import com.example.quiznotion.data.local.entity.QuizTopicEntity
+import com.example.quiznotion.data.local.entity.UserAnswerEntity
 
 @Database(
-    entities = [
-        QuizTopicEntity::class,
-        QuizQuestionEntity::class,
-    ], version = 2, exportSchema = false
+    entities = [QuizTopicEntity::class, QuizQuestionEntity::class, UserAnswerEntity::class],
+    version = 3,
+    exportSchema = false
 )
 
 @TypeConverters(
@@ -22,4 +23,5 @@ import com.example.quiznotion.data.local.entity.QuizTopicEntity
 abstract class QuizDatabase : RoomDatabase() {
     abstract fun quizTopicDao(): QuizTopicDao
     abstract fun quizQuestionDao(): QuizQuestionDao
+    abstract fun userAnswerDao(): UserAnswerDao
 }

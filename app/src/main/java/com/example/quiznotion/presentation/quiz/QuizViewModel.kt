@@ -87,7 +87,10 @@ class QuizViewModel(
 
             QuizAction.SubmitQuizConfirmButtonClick -> {
                 _state.update { it.copy(isSubmitDialogOpen = false) }
-                _event.trySend(QuizEvent.NavigateToResultScreen)
+                viewModelScope.launch {
+                    saveUserAnswers()
+                }
+
             }
 
             QuizAction.Refresh -> {
@@ -141,5 +144,13 @@ class QuizViewModel(
         }.onFailure { error ->
             _event.send(QuizEvent.ShowErrorMessage(error.getErrorMessage()))
         }
+    }
+
+    private suspend fun saveUserAnswers() {
+        questionRepository.saveUserAnswers(state.value.answers)
+            .onFailure { error ->
+                _event.send(QuizEvent.ShowErrorMessage(error.getErrorMessage()))
+            }
+        _event.trySend(QuizEvent.NavigateToResultScreen)
     }
 }

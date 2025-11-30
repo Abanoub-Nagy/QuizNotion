@@ -24,6 +24,7 @@ val koinModule = module {
     single { DatabaseFactory.create(get()) }
     single { get<QuizDatabase>().quizTopicDao() }
     single { get<QuizDatabase>().quizQuestionDao() }
+    single { get<QuizDatabase>().userAnswerDao() }
 
     singleOf(::QuizQuestionRepositoryImpl).bind<QuizQuestionRepository>()
     singleOf(::QuizTopicRepositoryImpl).bind<QuizTopicRepository>()
