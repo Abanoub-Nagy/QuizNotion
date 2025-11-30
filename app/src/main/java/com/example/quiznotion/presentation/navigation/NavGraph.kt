@@ -17,7 +17,7 @@ import com.example.quiznotion.presentation.issue_report.IssueReportState
 import com.example.quiznotion.presentation.quiz.QuizScreen
 import com.example.quiznotion.presentation.quiz.QuizViewModel
 import com.example.quiznotion.presentation.result.ResultScreen
-import com.example.quiznotion.presentation.result.ResultState
+import com.example.quiznotion.presentation.result.ResultViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -64,8 +64,11 @@ fun NavGraph(
                 })
         }
         composable<Route.ResultScreen> {
+            val viewModel = koinViewModel<ResultViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             ResultScreen(
-                state = ResultState(quizQuestions = dummyQuestions),
+                state = state,
+                event = viewModel.event,
                 onStartNewQuizClicked = {
                     navController.navigate(Route.DashBoardScreen) {
                         popUpTo<Route.ResultScreen> {
