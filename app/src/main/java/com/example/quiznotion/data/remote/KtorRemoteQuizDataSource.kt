@@ -19,9 +19,9 @@ class KtorRemoteQuizDataSource(
         }
     }
 
-    override suspend fun getQuizQuestions( topicCode: Int): Result<List<QuizQuestionDto>, DataError> {
+    override suspend fun getQuizQuestions(topicCode: Int): Result<List<QuizQuestionDto>, DataError> {
         return safeCall<List<QuizQuestionDto>> {
-            httpClient.get(urlString = "$BASE_URL/quiz/questions/random"){
+            httpClient.get(urlString = "$BASE_URL/quiz/questions/random") {
                 parameter("topicCode", topicCode)
             }
         }
