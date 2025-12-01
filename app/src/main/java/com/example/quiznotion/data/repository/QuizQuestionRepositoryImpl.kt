@@ -2,6 +2,7 @@ package com.example.quiznotion.data.repository
 
 import com.example.quiznotion.data.local.dao.QuizQuestionDao
 import com.example.quiznotion.data.local.dao.UserAnswerDao
+import com.example.quiznotion.data.mapper.entityToQuizQuestion
 import com.example.quiznotion.data.mapper.entityToQuizQuestions
 import com.example.quiznotion.data.mapper.toQuizQuestions
 import com.example.quiznotion.data.mapper.toQuizQuestionsEntity
@@ -42,6 +43,19 @@ class QuizQuestionRepositoryImpl(
                 Result.Success(questionsEntity.entityToQuizQuestions())
             } else {
                 Result.Failure(DataError.Unknown(errorMessage = "No Quiz Questions Found."))
+            }
+        } catch (e: Exception) {
+            Result.Failure(DataError.Unknown(e.message))
+        }
+    }
+
+    override suspend fun getQuizQuestionById(questionId: String): Result<QuizQuestion, DataError> {
+        return try {
+            val questionEntity = questionDao.getQuizQuestionById(questionId)
+            if (questionEntity != null) {
+                Result.Success(questionEntity.entityToQuizQuestion())
+            } else {
+                Result.Failure(DataError.Unknown(errorMessage = "Quiz Question not found"))
             }
         } catch (e: Exception) {
             Result.Failure(DataError.Unknown(e.message))
