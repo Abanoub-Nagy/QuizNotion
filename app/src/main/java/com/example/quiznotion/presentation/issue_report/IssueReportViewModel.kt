@@ -122,6 +122,9 @@ class IssueReportViewModel(
     }
 
     private fun String.isValidEmail(): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(this).matches()
+        return isNotBlank() &&
+                Patterns.EMAIL_ADDRESS.matcher(this).matches() &&
+                contains("@") &&
+                contains(".")
     }
 }
