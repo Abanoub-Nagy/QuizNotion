@@ -42,7 +42,10 @@ fun NameEditDialog(
             },
             onDismissRequest = onDismissRequest,
             confirmButton = {
-                TextButton(onClick = onConfirmClicked) {
+                TextButton(
+                    onClick = onConfirmClicked,
+                    enabled = usernameError == null
+                ) {
                     Text(text = confirmButtonText)
                 }
             },

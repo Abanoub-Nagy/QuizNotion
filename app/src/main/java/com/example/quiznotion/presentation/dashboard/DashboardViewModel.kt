@@ -40,6 +40,40 @@ class DashboardViewModel(
         getQuizTopics()
     }
 
+    fun onAction(action: DashboardAction) {
+        when(action) {
+            DashboardAction.NameEditIconClick -> {
+                _state.update {
+                    it.copy(
+                        nameTextFieldValue = state.value.username,
+                        isNameEditDialogOpen = true
+                    )
+                }
+            }
+            DashboardAction.NameEditDialogConfirm -> {
+                _state.update { it.copy(isNameEditDialogOpen = false) }
+                saveUsername(state.value.nameTextFieldValue)
+            }
+            DashboardAction.NameEditDialogDismiss -> {
+                _state.update { it.copy(isNameEditDialogOpen = false) }
+            }
+
+            is DashboardAction.SetUsername -> {
+                val usernameError = validateUsername(action.username)
+                _state.update {
+                    it.copy(
+                        nameTextFieldValue = action.username,
+                        usernameError = usernameError
+                    )
+                }
+            }
+
+            DashboardAction.RefreshIconClick -> {
+                getQuizTopics()
+            }
+        }
+    }
+
     private fun getQuizTopics() {
         viewModelScope.launch {
             _state.update { it.copy(isTopicsLoading = true) }
@@ -59,6 +93,22 @@ class DashboardViewModel(
                 }
 
             }
+        }
+    }
+
+    private fun saveUsername(username: String) {
+        viewModelScope.launch {
+            val trimmedUsername = username.trim()
+            userPreferencesRepository.saveUsername(trimmedUsername)
+        }
+    }
+
+    private fun validateUsername(username: String): String? {
+        return when {
+            username.isBlank() -> "Please enter your name."
+            username.length < 3 -> "Name is too short."
+            username.length > 20 -> "Name is too long."
+            else -> null
         }
     }
 }

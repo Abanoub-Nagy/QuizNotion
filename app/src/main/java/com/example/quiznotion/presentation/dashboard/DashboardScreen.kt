@@ -14,15 +14,16 @@ import com.example.quiznotion.presentation.dashboard.component.QuizTopicSection
 @Composable
 fun DashboardScreen(
     state: DashboardState,
+    onAction: (DashboardAction) -> Unit,
     onTopicSelected: (Int) -> Unit = {},
 ) {
     NameEditDialog(
         isDialogOpen = state.isNameEditDialogOpen,
         textFieldValue = state.nameTextFieldValue,
         usernameError = state.usernameError,
-        onConfirmClicked = {},
-        onDismissRequest = {},
-        onTextFieldValueChanged = {},
+        onDismissRequest = { onAction(DashboardAction.NameEditDialogDismiss) },
+        onConfirmClicked = { onAction(DashboardAction.NameEditDialogConfirm) },
+        onTextFieldValueChanged = { onAction(DashboardAction.SetUsername(it)) }
     )
     Column(
         modifier = Modifier.fillMaxSize()
@@ -32,14 +33,14 @@ fun DashboardScreen(
             username = state.username,
             questionsAttempted = state.questionsAttempted,
             correctAnswers = state.correctAnswers,
-            onEditProfileClicked = { /* TODO: Handle edit profile click */ })
+            onEditProfileClicked = { onAction(DashboardAction.NameEditIconClick) })
 
         QuizTopicSection(
             modifier = Modifier.fillMaxWidth(),
             quizTopics = state.quizTopics,
             isTopicsLoading = state.isTopicsLoading,
             error = state.error,
-            onRefreshClicked = { /* TODO: Handle refresh click */ },
+            onRefreshClicked = { onAction(DashboardAction.RefreshIconClick)},
             onTopicSelected = onTopicSelected,
         )
     }
@@ -66,6 +67,7 @@ private fun PreviewDashboardScreen() {
     )
     DashboardScreen(
         state = state,
-        onTopicSelected = {}
+        onTopicSelected = {},
+        onAction = {}
     )
 }

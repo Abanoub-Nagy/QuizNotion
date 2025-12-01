@@ -52,12 +52,12 @@ fun QuizTopicSection(
                 verticalArrangement = Arrangement.spacedBy(30.dp),
             ) {
                 if (isTopicsLoading) {
-                    items(7) {
+                    items(6) {
                         ShimmerEffect(
                             modifier = Modifier
-                                .clip(MaterialTheme.shapes.small)
                                 .fillMaxWidth()
                                 .height(120.dp)
+                                .clip(MaterialTheme.shapes.small)
                                 .background(MaterialTheme.colorScheme.surfaceVariant)
                         )
                     }

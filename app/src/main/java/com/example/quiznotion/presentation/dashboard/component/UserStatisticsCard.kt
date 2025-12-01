@@ -37,8 +37,9 @@ fun UserStatisticsCard(
     questionsAttempted: Int,
     correctAnswers: Int,
 ) {
-    val barProgress =
-        if (questionsAttempted == 0) 0f else correctAnswers.toFloat() / questionsAttempted.toFloat()
+    val barProgress = if (questionsAttempted > 0) {
+        correctAnswers.toFloat() / questionsAttempted
+    } else 0f
 
     Card(
         modifier = modifier
@@ -126,7 +127,7 @@ private fun Statistics(
         Spacer(modifier = Modifier.width(10.dp))
         Column {
             Text(
-                text = value.toString(),
+                text = "$value",
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
             )
             Text(
