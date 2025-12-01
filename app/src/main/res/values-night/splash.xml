@@ -2,8 +2,8 @@
 <resources>
 
     <style name="Theme.QuizNotion.MySplash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/black</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/app_icon_transparent</item>
+        <item name="windowSplashScreenBackground">@color/on_primary_dark</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/quiz_app_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.QuizNotion</item>
     </style>
 </resources>

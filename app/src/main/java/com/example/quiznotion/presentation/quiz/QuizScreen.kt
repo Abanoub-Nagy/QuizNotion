@@ -1,8 +1,5 @@
 package com.example.quiznotion.presentation.quiz
 
-/**
- * @author Abanoub Nagy
- */
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -76,8 +73,7 @@ fun QuizScreen(
     ExitQuizDialog(
         isOpen = state.isExitDialogOpen,
         onDialogDismiss = { onAction(QuizAction.ExitQuizDialogDismiss) },
-        onConfirmButtonClick = { onAction(QuizAction.ExitQuizConfirmButtonClick) }
-    )
+        onConfirmButtonClick = { onAction(QuizAction.ExitQuizConfirmButtonClick) })
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -114,9 +110,8 @@ fun QuizScreen(
 
                 else -> {
                     QuizScreenContent(
-                        state = state,
-                        onAction = onAction
-                        )
+                        state = state, onAction = onAction
+                    )
                 }
             }
         }
@@ -213,11 +208,11 @@ private fun PreviewQuizScreen() {
     )
     QuizScreen(
         state = QuizState(
-        questions = dummyQuestions, answers = dummyAnswers,
+            questions = dummyQuestions, answers = dummyAnswers,
 //            isLoading = true,
 //            loadingErrorText = "Loading... Please wait or check your internet connection..",
-        topBarTitle = "Sample Quiz", isSubmitDialogOpen = true
-    ),
+            topBarTitle = "Sample Quiz", isSubmitDialogOpen = true
+        ),
         navigateToDashboardScreen = {},
         navigateToResultScreen = {},
         onAction = {},

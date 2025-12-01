@@ -26,15 +26,15 @@ fun IssueReportScreenTopBar(
         modifier = modifier,
         title = { Text(title) },
         navigationIcon = {
-        IconButton(
-            onClick = onBackButtonClicked
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                contentDescription = "Navigate Back"
-            )
-        }
-    })
+            IconButton(
+                onClick = onBackButtonClicked
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                    contentDescription = "Navigate Back"
+                )
+            }
+        })
 }
 
 @Preview

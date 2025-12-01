@@ -30,12 +30,12 @@ fun OptionItem(
                     MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
                 }, shape = MaterialTheme.shapes.small
             ), colors = CardDefaults.cardColors(
-                        containerColor = if (isSelected) {
-                MaterialTheme.colorScheme.primaryContainer
-            } else {
-                MaterialTheme.colorScheme.surface
-            }
-        )) {
+        containerColor = if (isSelected) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            MaterialTheme.colorScheme.surface
+        }
+    )) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {

@@ -23,8 +23,7 @@ fun DashboardScreen(
         usernameError = state.usernameError,
         onDismissRequest = { onAction(DashboardAction.NameEditDialogDismiss) },
         onConfirmClicked = { onAction(DashboardAction.NameEditDialogConfirm) },
-        onTextFieldValueChanged = { onAction(DashboardAction.SetUsername(it)) }
-    )
+        onTextFieldValueChanged = { onAction(DashboardAction.SetUsername(it)) })
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -40,7 +39,7 @@ fun DashboardScreen(
             quizTopics = state.quizTopics,
             isTopicsLoading = state.isTopicsLoading,
             error = state.error,
-            onRefreshClicked = { onAction(DashboardAction.RefreshIconClick)},
+            onRefreshClicked = { onAction(DashboardAction.RefreshIconClick) },
             onTopicSelected = onTopicSelected,
         )
     }
@@ -65,9 +64,5 @@ private fun PreviewDashboardScreen() {
         isTopicsLoading = false,
         isNameEditDialogOpen = false
     )
-    DashboardScreen(
-        state = state,
-        onTopicSelected = {},
-        onAction = {}
-    )
+    DashboardScreen(state = state, onTopicSelected = {}, onAction = {})
 }

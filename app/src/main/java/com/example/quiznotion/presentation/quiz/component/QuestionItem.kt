@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -33,9 +32,9 @@ fun QuestionItem(
             text = currentQuestion.question, style = MaterialTheme.typography.headlineSmall
         )
         Spacer(modifier = Modifier.height(10.dp))
-        FlowRow (
+        FlowRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-        ){
+        ) {
             currentQuestion.allOptions.forEach { option ->
                 OptionItem(
                     modifier = Modifier

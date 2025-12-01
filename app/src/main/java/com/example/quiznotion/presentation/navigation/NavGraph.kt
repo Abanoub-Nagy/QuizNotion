@@ -33,9 +33,7 @@ fun NavGraph(
             val viewModel = koinViewModel<DashboardViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
             DashboardScreen(
-                state = state,
-                onAction = viewModel::onAction,
-                onTopicSelected = { topicCode ->
+                state = state, onAction = viewModel::onAction, onTopicSelected = { topicCode ->
                     navController.navigate(Route.QuizScreen(topicCode))
                 })
         }

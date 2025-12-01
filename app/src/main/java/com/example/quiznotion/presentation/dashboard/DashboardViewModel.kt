@@ -41,19 +41,20 @@ class DashboardViewModel(
     }
 
     fun onAction(action: DashboardAction) {
-        when(action) {
+        when (action) {
             DashboardAction.NameEditIconClick -> {
                 _state.update {
                     it.copy(
-                        nameTextFieldValue = state.value.username,
-                        isNameEditDialogOpen = true
+                        nameTextFieldValue = state.value.username, isNameEditDialogOpen = true
                     )
                 }
             }
+
             DashboardAction.NameEditDialogConfirm -> {
                 _state.update { it.copy(isNameEditDialogOpen = false) }
                 saveUsername(state.value.nameTextFieldValue)
             }
+
             DashboardAction.NameEditDialogDismiss -> {
                 _state.update { it.copy(isNameEditDialogOpen = false) }
             }
@@ -62,8 +63,7 @@ class DashboardViewModel(
                 val usernameError = validateUsername(action.username)
                 _state.update {
                     it.copy(
-                        nameTextFieldValue = action.username,
-                        usernameError = usernameError
+                        nameTextFieldValue = action.username, usernameError = usernameError
                     )
                 }
             }

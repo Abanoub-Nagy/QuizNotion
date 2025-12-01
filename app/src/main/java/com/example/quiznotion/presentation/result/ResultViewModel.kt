@@ -44,10 +44,10 @@ class ResultViewModel(
 
     private suspend fun getUserAnswers() {
         questionRepository.getUserAnswers().onSuccess { answers ->
-                _state.update { it.copy(userAnswers = answers) }
-            }.onFailure { error ->
-                _event.send(ResultEvent.ShowToast(error.getErrorMessage()))
-            }
+            _state.update { it.copy(userAnswers = answers) }
+        }.onFailure { error ->
+            _event.send(ResultEvent.ShowToast(error.getErrorMessage()))
+        }
     }
 
     private fun updateResult() {

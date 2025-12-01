@@ -40,6 +40,7 @@ fun IssueReportScreen(
                 is IssueReportEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
                 }
+
                 IssueReportEvent.NavigateUp -> {
                     navigateUp()
                 }
@@ -104,9 +105,9 @@ fun IssueReportScreen(
             modifier = Modifier
                 .padding(10.dp)
                 .align(Alignment.CenterHorizontally),
-                        onClick = {
-                            onAction(IssueReportAction.SubmitReport)
-                        }) {
+            onClick = {
+                onAction(IssueReportAction.SubmitReport)
+            }) {
             Text(
                 modifier = Modifier.padding(horizontal = 10.dp), text = "Submit Report"
             )

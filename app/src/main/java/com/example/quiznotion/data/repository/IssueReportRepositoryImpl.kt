@@ -10,7 +10,7 @@ import com.example.quiznotion.domain.util.Result
 
 class IssueReportRepositoryImpl(
     private val remoteDataSource: RemoteQuizDataSource
-): IssueReportRepository {
+) : IssueReportRepository {
 
     override suspend fun insertIssueReport(
         report: IssueReport

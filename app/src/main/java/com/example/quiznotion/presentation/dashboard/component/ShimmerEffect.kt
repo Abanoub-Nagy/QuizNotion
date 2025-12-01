@@ -28,7 +28,7 @@ fun ShimmerEffect(
         shimmerColors.copy(alpha = 0.2f),
         shimmerColors.copy(0.6f)
     )
-        val transition = rememberInfiniteTransition("ShimmerTransition")
+    val transition = rememberInfiniteTransition("ShimmerTransition")
     val translateAnim = transition.animateFloat(
         initialValue = 0f, targetValue = 1000f, animationSpec = infiniteRepeatable(
             animation = tween(1000), repeatMode = RepeatMode.Restart

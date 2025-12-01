@@ -145,6 +145,7 @@ class QuizViewModel(
             _event.send(QuizEvent.ShowErrorMessage(error.getErrorMessage()))
         }
     }
+
     private fun submitQuiz() {
         viewModelScope.launch {
             _state.update {
@@ -160,10 +161,9 @@ class QuizViewModel(
     }
 
     private suspend fun saveUserAnswers() {
-        questionRepository.saveUserAnswers(state.value.answers)
-            .onFailure { error ->
-                _event.send(QuizEvent.ShowErrorMessage(error.getErrorMessage()))
-            }
+        questionRepository.saveUserAnswers(state.value.answers).onFailure { error ->
+            _event.send(QuizEvent.ShowErrorMessage(error.getErrorMessage()))
+        }
     }
 
     private suspend fun updateScore() {
@@ -182,8 +182,7 @@ class QuizViewModel(
         val totalCorrect = previousCorrect + correctAnswersCount
 
         userPreferencesRepository.saveScore(
-            questionAttempted = totalAttempted,
-            correctAnswers = totalCorrect
+            questionAttempted = totalAttempted, correctAnswers = totalCorrect
         )
     }
 }
