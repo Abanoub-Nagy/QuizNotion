@@ -31,14 +31,13 @@ suspend inline fun <reified T> safeCall(
                 Result.Success(response.body<T>())
             } catch (e: JsonConvertException) {
                 Result.Failure(DataError.Serialization)
-            } catch (e: NoTransformationFoundException) {
+            }  catch (e: NoTransformationFoundException) {
                 Result.Failure(DataError.Serialization)
             } catch (e: Exception) {
                 e.printStackTrace()
                 return Result.Failure(DataError.Unknown(e.message))
             }
         }
-
         408 -> Result.Failure(DataError.RequestTimeOut)
         429 -> Result.Failure(DataError.TooManyRequests)
         in 500..599 -> Result.Failure(DataError.Server)

@@ -7,6 +7,7 @@ import androidx.navigation.toRoute
 import com.example.quiznotion.domain.model.UserAnswer
 import com.example.quiznotion.domain.repository.QuizQuestionRepository
 import com.example.quiznotion.domain.repository.QuizTopicRepository
+import com.example.quiznotion.domain.repository.UserPreferencesRepository
 import com.example.quiznotion.domain.util.onFailure
 import com.example.quiznotion.domain.util.onSuccess
 import com.example.quiznotion.presentation.navigation.Route
@@ -14,6 +15,7 @@ import com.example.quiznotion.presentation.util.getErrorMessage
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -22,6 +24,7 @@ class QuizViewModel(
     savedStateHandle: SavedStateHandle,
     private val topicRepository: QuizTopicRepository,
     private val questionRepository: QuizQuestionRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
     private val topicCode = savedStateHandle.toRoute<Route.QuizScreen>().topicCode
     private val _state = MutableStateFlow(QuizState())
@@ -87,10 +90,7 @@ class QuizViewModel(
 
             QuizAction.SubmitQuizConfirmButtonClick -> {
                 _state.update { it.copy(isSubmitDialogOpen = false) }
-                viewModelScope.launch {
-                    saveUserAnswers()
-                }
-
+                submitQuiz()
             }
 
             QuizAction.Refresh -> {
@@ -145,12 +145,45 @@ class QuizViewModel(
             _event.send(QuizEvent.ShowErrorMessage(error.getErrorMessage()))
         }
     }
+    private fun submitQuiz() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(isLoading = true, loadingErrorText = "Submitting Quiz...")
+            }
+            saveUserAnswers()
+            updateScore()
+            _state.update {
+                it.copy(isLoading = false, loadingErrorText = null)
+            }
+            _event.send(QuizEvent.NavigateToResultScreen)
+        }
+    }
 
     private suspend fun saveUserAnswers() {
         questionRepository.saveUserAnswers(state.value.answers)
             .onFailure { error ->
                 _event.send(QuizEvent.ShowErrorMessage(error.getErrorMessage()))
             }
-        _event.trySend(QuizEvent.NavigateToResultScreen)
+    }
+
+    private suspend fun updateScore() {
+        val quizQuestions = state.value.questions
+        val userAnswers = state.value.answers
+
+        val correctAnswersCount = userAnswers.count { answer ->
+            val question = quizQuestions.find { it.id == answer.questionId }
+            question?.correctAnswer == answer.selectedAnswer
+        }
+
+        val previousAttempted = userPreferencesRepository.getQuestionsAttempted().first()
+        val previousCorrect = userPreferencesRepository.getCorrectAnswers().first()
+
+        val totalAttempted = previousAttempted + userAnswers.size
+        val totalCorrect = previousCorrect + correctAnswersCount
+
+        userPreferencesRepository.saveScore(
+            questionAttempted = totalAttempted,
+            correctAnswers = totalCorrect
+        )
     }
 }
