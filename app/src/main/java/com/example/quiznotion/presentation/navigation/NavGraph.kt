@@ -70,7 +70,7 @@ fun NavGraph(
                 state = state,
                 onAction = viewModel::onAction,
                 event = viewModel.event,
-                onBackButtonClicked = {
+                navigateUp = {
                     navController.navigateUp()
                 })
         }

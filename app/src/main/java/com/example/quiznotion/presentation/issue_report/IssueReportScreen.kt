@@ -30,7 +30,7 @@ fun IssueReportScreen(
     state: IssueReportState,
     event: Flow<IssueReportEvent>,
     onAction: (IssueReportAction) -> Unit,
-    onBackButtonClicked: () -> Unit = {},
+    navigateUp: () -> Unit = {},
 ) {
     val context = LocalContext.current
 
@@ -40,8 +40,9 @@ fun IssueReportScreen(
                 is IssueReportEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
                 }
-
-                else -> {}
+                IssueReportEvent.NavigateUp -> {
+                    navigateUp()
+                }
             }
         }
     }
@@ -50,7 +51,7 @@ fun IssueReportScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         IssueReportScreenTopBar(
-            title = "Issue Report", onBackButtonClicked = onBackButtonClicked,
+            title = "Issue Report", onBackButtonClicked = navigateUp,
         )
         Column(
             modifier = Modifier
@@ -103,7 +104,9 @@ fun IssueReportScreen(
             modifier = Modifier
                 .padding(10.dp)
                 .align(Alignment.CenterHorizontally),
-                        onClick = { /* TODO: Handle submit report action */ }) {
+                        onClick = {
+                            onAction(IssueReportAction.SubmitReport)
+                        }) {
             Text(
                 modifier = Modifier.padding(horizontal = 10.dp), text = "Submit Report"
             )
@@ -116,7 +119,7 @@ fun IssueReportScreen(
 private fun PreviewIssueReportScreen() {
     IssueReportScreen(
         state = IssueReportState(),
-        onBackButtonClicked = {},
+        navigateUp = {},
         onAction = {},
         event = emptyFlow()
     )

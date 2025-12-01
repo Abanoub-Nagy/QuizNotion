@@ -5,8 +5,10 @@ import com.example.quiznotion.data.local.QuizDatabase
 import com.example.quiznotion.data.remote.HttpClientFactory
 import com.example.quiznotion.data.remote.KtorRemoteQuizDataSource
 import com.example.quiznotion.data.remote.RemoteQuizDataSource
+import com.example.quiznotion.data.repository.IssueReportRepositoryImpl
 import com.example.quiznotion.data.repository.QuizQuestionRepositoryImpl
 import com.example.quiznotion.data.repository.QuizTopicRepositoryImpl
+import com.example.quiznotion.domain.repository.IssueReportRepository
 import com.example.quiznotion.domain.repository.QuizQuestionRepository
 import com.example.quiznotion.domain.repository.QuizTopicRepository
 import com.example.quiznotion.presentation.dashboard.DashboardViewModel
@@ -32,6 +34,7 @@ val koinModule = module {
     //repository
     singleOf(::QuizQuestionRepositoryImpl).bind<QuizQuestionRepository>()
     singleOf(::QuizTopicRepositoryImpl).bind<QuizTopicRepository>()
+    singleOf(::IssueReportRepositoryImpl).bind<IssueReportRepository>()
 
     //viewModel
     viewModelOf(::QuizViewModel)
