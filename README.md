@@ -218,9 +218,9 @@ limitations under the License.
 ## 👨‍💻 Author
 
 **Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
+- GitHub: (https://github.com/Abanoub-Nagy)
+- LinkedIn: [Abanoub Nagy](https://www.linkedin.com/in/abanoub-nagy/)
+- Email: abanoubnagy24@gmail.com
 
 ## 🙏 Acknowledgments
 
@@ -232,7 +232,7 @@ limitations under the License.
 
 ## 📧 Support
 
-For support, email support@quiznotion.com or open an issue in the repository.
+For support, email https://github.com/Abanoub-Nagy/QuizNotion or open an issue in the repository.
 
 ---
 
