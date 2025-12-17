@@ -40,7 +40,7 @@ This project follows **Clean Architecture** principles with **MVVM** pattern:
                   ↓
 ┌─────────────────────────────────────────┐
 │           Domain Layer                  │
-│   (Use Cases, Models, Repositories)     │
+│       ( Models, Repositories)           │
 └─────────────────────────────────────────┘
                   ↓
 ┌─────────────────────────────────────────┐
@@ -91,8 +91,9 @@ This project follows **Clean Architecture** principles with **MVVM** pattern:
 | Dashboard | Quiz Screen | Results |
 |-----------|------------|---------|
 | ![Dashboard](<img width="1080" height="2400" alt="Screenshot_20251217_154840" src="https://github.com/user-attachments/assets/a0070d1f-4cd4-417b-adba-a15e81deb5f7" />
-) | ![Quiz](<img width="1080" height="2400" alt="Screenshot_20251217_154854" src="https://github.com/user-attachments/assets/17f4467c-210e-4610-b708-7c181df25862" />
-) | ![Results](<img width="1080" height="2400" alt="Screenshot_20251217_154904" src="https://github.com/user-attachments/assets/6d0ced4b-3534-48c3-a5a7-507cc450c0b2" />
+) | ![Quiz](<img width="1080" height="2400" alt="Screenshot_20251217_154854" src="https://github.com/user-attachments/assets/f0a84800-8fe2-4852-9005-79b72f3ce6f5" />
+) | ![Results](<img width="1080" height="2400" alt="Screenshot_20251217_154904" src="https://github.com/user-attachments/assets/47e82c83-1a8d-4ccc-aba2-dcfe5b6f8e09" />
+
 ) |
 
 </details>
