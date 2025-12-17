@@ -162,16 +162,6 @@ The app uses a custom Material Design 3 color scheme:
 
 Fonts: Ubuntu (via Google Fonts)
 
-## 🧪 Testing
-
-```bash
-# Run unit tests
-./gradlew test
-
-# Run instrumented tests
-./gradlew connectedAndroidTest
-```
-
 ## 📝 Contributing
 
 Contributions are welcome! Please follow these steps:
