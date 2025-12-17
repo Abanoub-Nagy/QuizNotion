@@ -128,16 +128,6 @@ This project follows **Clean Architecture** principles with **MVVM** pattern:
    - Connect an Android device or start an emulator
    - Click the "Run" button or press `Shift + F10`
 
-## 🌐 API Configuration
-
-The app connects to a backend API. The base URL is configured in:
-
-```kotlin
-// app/src/main/java/com/example/quiznotion/data/util/Constant.kt
-const val BASE_URL = "http://quizznotion.us-east-1.elasticbeanstalk.com"
-```
-
-To use your own backend, replace this URL with your API endpoint.
 
 ## 📦 Project Structure
 
