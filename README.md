@@ -90,7 +90,10 @@ This project follows **Clean Architecture** principles with **MVVM** pattern:
 
 | Dashboard | Quiz Screen | Results |
 |-----------|------------|---------|
-| ![Dashboard](screenshots/dashboard.png) | ![Quiz](screenshots/quiz.png) | ![Results](screenshots/results.png) |
+| ![Dashboard](<img width="1080" height="2400" alt="Screenshot_20251217_154840" src="https://github.com/user-attachments/assets/a0070d1f-4cd4-417b-adba-a15e81deb5f7" />
+) | ![Quiz](<img width="1080" height="2400" alt="Screenshot_20251217_154854" src="https://github.com/user-attachments/assets/17f4467c-210e-4610-b708-7c181df25862" />
+) | ![Results](<img width="1080" height="2400" alt="Screenshot_20251217_154904" src="https://github.com/user-attachments/assets/6d0ced4b-3534-48c3-a5a7-507cc450c0b2" />
+) |
 
 </details>
 
